@@ -1,0 +1,259 @@
+<!-- From for details of New Visitor-->
+<form (ngSubmit)="submitNewVisitorForm(newVisitorForm)" #newVisitorForm="ngForm">
+  <div class="row p-2 align-items-center">
+      <div class="col-2">
+        <label class="col-form-label">Name</label>
+      </div>
+      <div class="col-6">
+        <input type="text"  class="form-control" name="newVisitorName" #newVisitorName="ngModel"
+          [(ngModel)]="visitor.name" required pattern="[a-zA-Z\ ]+" (keyup)="searchName()">
+          <!--Show appropriate error message for name-->
+          <div *ngIf="(newVisitorName.dirty && newVisitorName.invalid) || newVisitorName.touched && newVisitorName.invalid">
+            <div *ngIf="newVisitorName.errors.required" class="alert alert-danger mt-1" role="alert">
+              Please enter your the visitor's
+            </div>
+            <div *ngIf="newVisitorName.errors.pattern" class="alert alert-danger mt-1" role="alert">
+              Invalid visitor's name entered
+            </div>
+          </div>
+
+          <div class="position-fixed col-4 mx-3 card overflow-auto" style="max-height: 200px; z-index: 5;" [hidden]="hideStoredNames">
+            <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action" *ngFor="let person of searchResults" (click)="onClickPersonName(person)">
+                  {{person.name}}
+                </button>
+              </div>
+          </div>
+
+      </div>
+  </div>
+  <div class="row p-2 align-items-center">
+      <div class="col-2">
+        <label class="col-form-label">Phone Number</label>
+      </div>
+      <div class="col-6">
+        <input type="tel"  class="form-control" name="newVisitorPhoneNo" #newVisitorPhoneNo="ngModel"
+          [(ngModel)]="visitor.phoneNo" required pattern="^0[0-9]{9}">
+
+          <!--Show appropriate error message for phone number-->
+          <div *ngIf="(newVisitorPhoneNo.dirty && newVisitorPhoneNo.invalid) || newVisitorPhoneNo.touched && newVisitorPhoneNo.invalid">
+            <div *ngIf="newVisitorPhoneNo.errors.required" class="alert alert-danger mt-1" role="alert">
+              Please enter the visitor's telephone number
+            </div>
+            <div *ngIf="newVisitorPhoneNo.errors.pattern" class="alert alert-danger mt-1" role="alert">
+              Invalid phone number entered
+            </div>
+          </div>
+      </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Email</label>
+    </div>
+    <div class="col-6">
+      <input type="email" class="form-control" name="newVisitorEmail" #newVisitorEmail="ngModel"
+        [(ngModel)]="visitor.email" pattern="^[a-zA-Z0-9+\_\.\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,3}$">
+
+      <!--Show appropriate error message for email-->
+      <div *ngIf="(newVisitorEmail.dirty && newVisitorEmail.invalid) || newVisitorEmail.touched && newVisitorEmail.invalid">
+        <div *ngIf="newVisitorEmail.errors.pattern" class="alert alert-danger mt-1" role="alert">
+            Invalid email entered
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+      <div class="col-2">
+        <label class="col-form-label">Gender</label>
+      </div>
+      <div class="col-6">
+          <select class="form-select" name="newVisitorGender" #newVisitorGender="ngModel" [(ngModel)]="visitor.gender" required>
+              <option value="m">Male</option>
+              <option value="f">Female</option>
+            </select>
+      </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Purpose</label>
+    </div>
+    <div class="col-6">
+        <select class="form-select" name="newVisitorPurpose" #newVisitorPurpose="ngModel" [(ngModel)]="visit.purpose">
+            <option *ngFor="let purpose of purposes"  [ngValue]="purpose">
+              {{purpose}}
+            </option>
+          </select>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Person To See</label>
+    </div>
+    <div class="col-6">
+        <select class="form-select" name="newVisitorPToSee" #newVisitorPToSee="ngModel" required
+          [(ngModel)]="visit.employeeToSee.empId">
+            <option  *ngFor="let employee of employees" [ngValue]="employee.empId">
+              {{employee.name}}
+            </option>
+          </select>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center" [hidden]="visit.purpose == 'cheque' || hideDone">
+    <div class="col-8 text-end">
+      <button type="submit" class="btn btn-primary" [disabled]="newVisitorForm.invalid">Done</button>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center" [hidden]="visit.purpose != 'cheque'">
+    <div class="col-8 text-end">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" [disabled]="newVisitorForm.invalid"
+        data-bs-target="#chequeTypeStaticBackdrop">
+        Next
+      </button>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center" [hidden]="hideLoading">
+    <div class="col-8 text-end">
+      <button type="submit" class="btn btn-primary" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Loading
+      </button>
+    </div>
+  </div>
+</form>
+
+<!--Modal for Cheque Type-->
+<div class="modal fade" id="chequeTypeStaticBackdrop" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="chequeTypeStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chequeTypeStaticBackdropLabel">Cheque Type</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you collecting your personal cheque ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal"
+          (click)="isNotPersonalCheque()" data-bs-target="#chequeCollectionStaticBackdrop">
+          No
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="isPersonalCheque()"
+          data-bs-target="#chequeCollectionStaticBackdrop" data-bs-dismiss="modal">
+          Yes
+      </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal To Enter Cheque Collection Detail-->
+<div class="modal fade" id="chequeCollectionStaticBackdrop" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="chequeCollectionStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chequeCollectionStaticBackdropLabel">Enter Cheque Collection Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetReceivingChequeForm(receivingChequeForm)"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger mt-1" role="alert" [hidden]='hideChequeNoNotFoundError'>
+          The cheque number you entered does not exist
+        </div>
+        <!--Form for check details-->
+        <form #receivingChequeForm="ngForm" (ngSubmit)="submitReceivingChequeForm(receivingChequeForm)">
+          <div class="mb-3">
+            <label class="form-label">Cheque Number</label>
+            <input type="text" class="form-control" name="chequeNo" #chequeNo="ngModel" required
+            [(ngModel)]="cheque.chequeNo" pattern="[0-9]{6}">
+
+            <div *ngIf="(chequeNo.dirty && chequeNo.invalid) || chequeNo.touched && chequeNo.invalid">
+              <div *ngIf="chequeNo.errors.required" class="alert alert-danger mt-1" role="alert">
+                Cheque number is required
+              </div>
+              <div *ngIf="chequeNo.errors.pattern" class="alert alert-danger mt-1" role="alert">
+                Invalid cheque number entered
+              </div>
+            </div>
+          </div>
+          <div class="mb-3" [hidden]="hideIdInput">
+            <label class="form-label">ID Number</label>
+            <input type="text" class="form-control" name="nationalId" #nationalId="ngModel" required
+              [(ngModel)]="visitor.nationalId">
+
+              <div *ngIf="(nationalId.dirty && nationalId.invalid) || nationalId.touched && nationalId.invalid">
+                <div *ngIf="nationalId.errors.required" class="alert alert-danger mt-1" role="alert">
+                  National ID number is required
+                </div>
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary" [disabled]="hideIdInput ? chequeNo.invalid : receivingChequeForm.invalid">
+            Next
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal To Confirm Cheque Details-->
+<div class="modal fade" id="chequeConfirmationStaticBackdrop" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="chequeConfirmationStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chequeConfirmationStaticBackdropLabel">Confirm Cheque Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeChequeDetailsModal(receivingChequeForm)" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!--Table for check details-->
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <td>Cheque No.</td>
+              <td>{{receivedCheque.chequeNo}}</td>
+            </tr>
+            <tr>
+              <td>School Name</td>
+              <td>{{receivedCheque.schoolName}}</td>
+            </tr>
+            <tr>
+              <td>Amount</td>
+              <td>{{receivedCheque.amount}}</td>
+            </tr>
+            <tr>
+              <td>Participant Id No.</td>
+              <td>{{receivedCheque.loanId}}</td>
+            </tr>
+            <tr>
+              <td>Participant Name</td>
+              <td>{{participant.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" [hidden]=""
+          (click)="doneChequeDetailsModal(newVisitorForm,receivingChequeForm)">
+          Done
+        </button>
+        <!-- <button type="submit" class="btn btn-primary" [hidden]="" disabled>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Toast to show that cheque of the participant has been recorded-->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="toastId">
+    <div class="d-flex">
+      <div class="toast-body">
+        The visit has successful been logged.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>

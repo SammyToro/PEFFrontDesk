@@ -1,0 +1,24 @@
+<table class="table table-hover table-responsive">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Visitor</th>
+      <th scope="col">Employee Name</th>
+      <th scope="col">Purpose</th>
+      <th scope="col">Contact</th>
+      <th scope="col">Time In</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let visit of visits; index as i">
+      <th scope="row">{{i+1}}</th>
+      <td>{{visit.visitor.name}}</td>
+      <td>{{visit.employeeToSee.name}}</td>
+      <td>{{visit.purpose}}</td>
+      <td>{{visit.visitor.phoneNo}}</td>
+      <td>{{visit.timeIn.substring(11,16)}}</td>
+      <td><button class="btn btn-success" (click)="removeVisitFromQueue(i,visit.visitId)">Done</button></td>
+    </tr>
+  </tbody>
+</table>

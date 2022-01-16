@@ -1,0 +1,67 @@
+<div class="flex-shrink-0">
+  <div class="container">
+      <div class="bg-light p-5 rounded">
+          <h3 class="text-center">Welcome to the Welfare and Self Reliance Front Desk Application</h3>
+      </div>
+      <div>
+          <div class="row justify-content-center mt-5" >
+              <div class="col-10 col-md-8 col-lg-6 bg-light p-4 card form-group">
+                  <h2 class="text-center p-3"> Sign In</h2>
+                  <div class="alert alert-danger" role="alert" [hidden] = "hideErrorMessage">
+                    Your username or password is invalid
+                  </div>
+                  <form class="justify-content-center" (ngSubmit)="submitLogin(loginForm)" #loginForm="ngForm">
+
+                      <div class="mb-3 username">
+                      <label for="username" class="form-label">Username</label>
+                      <input type="email" class="form-control" required name="username"
+                        #username="ngModel" [(ngModel)]="employee.username" pattern="[a-zA-Z\-\@]+((C|c)hurchof(J|j)esus(C|c)hrist)\.org$">
+                      </div>
+                      <div *ngIf="(username.dirty && username.invalid) || username.touched && username.invalid">
+                        <div *ngIf="username.errors.required" class="alert alert-danger" role="alert">
+                          Please enter your username
+                        </div>
+                        <div *ngIf="username.errors.pattern" class="alert alert-danger" role="alert">
+                          Invalid username entered
+                        </div>
+                      </div>
+
+                      <div class="mb-3 password">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" class="form-control" required name="password"
+                      #password="ngModel" [(ngModel)]="employee.pword">
+                      </div>
+                      <div *ngIf="(password.dirty && password.invalid) || password.touched && password.invalid">
+                        <div *ngIf="password.errors.required" class="alert alert-danger" role="alert">
+                          Please enter your password
+                        </div>
+                      </div>
+
+                      <div class="d-grid col-3 mx-auto">
+                          <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid" [hidden]="hideLoginButton">
+                            Login
+                          </button>
+                      </div>
+                      <div class="d-grid col-3 mx-auto">
+                        <button type="submit" class="btn btn-primary" disabled [hidden]="hideLoading">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading
+                        </button>
+                      </div>
+                      <hr>
+
+                      <div class="d-grid col-6 mx-auto">
+                          <a [routerLink]="['/forgotPassword']"  class="btn btn-outline-secondary">Forgotten Password?</a>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<footer class="footer mt-5 py-3 bg-dark">
+  <div class="container text-center">
+    <h5 class="text-muted">WSRD &copy; Copyright 2021</h5>
+  </div>
+</footer>

@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-3">
+      <div class="d-flex flex-column p-3 bg-light vh-100  card">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+            <i class="fa fa-user-circle fa-4x"></i>
+            <span class="p-3">{{loggedInEmployeeName}}</span>
+          </a>
+          <hr>
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a [routerLink]="['/mainPage/newVisitor']" class="nav-link link-dark" routerLinkActive="active">
+                New visitor
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/mainPage/calledVisitor']" class="nav-link link-dark" routerLinkActive="active">
+                Called Visitor
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/mainPage/visitingQueue']" class="nav-link link-dark" routerLinkActive="active">
+                Visiting Queue
+              </a>
+            </li>
+            <li>
+              <a [routerLink]="['/mainPage/pendingCheque']" class="nav-link link-dark" routerLinkActive="active">
+                Unreceived Cheques
+              </a>
+            </li>
+            <li>
+              <!-- <a [routerLink]="['']" class="nav-link link-dark" routerLinkActive="active">
+                Reports
+              </a> -->
+            </li>
+          </ul>
+          <hr>
+          <button class="btn btn-secondary" type="submit">
+              Logout
+          </button>
+      </div>
+  </div>
+  <div class="col-9 justify-content-center">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<footer class="footer py-3 bg-dark">
+  <div class="container text-center">
+    <h5 class="text-muted">WSRD &copy; Copyright 2021</h5>
+  </div>
+</footer>

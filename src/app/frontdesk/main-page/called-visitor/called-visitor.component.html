@@ -1,0 +1,153 @@
+<form name="calledVisitorForm" #calledVisitorForm="ngForm" (ngSubmit)="submitCalledVisitorForm(calledVisitorForm)">
+  <div class="row p-2 align-items-center">
+      <div class="col-2">
+        <label class="col-form-label">Name</label>
+      </div>
+      <div class="col-6">
+        <input type="text" class="form-control" name="calledVisitorName" #calledVisitorName="ngModel"
+        [(ngModel)]="participant.name" required pattern="[a-zA-Z\ ]+">
+
+        <div *ngIf="(calledVisitorName.dirty && calledVisitorName.invalid) || calledVisitorName.touched && calledVisitorName.invalid">
+          <div *ngIf="calledVisitorName.errors.required" class="alert alert-danger mt-1" role="alert">
+            Please enter the participant name
+          </div>
+          <div *ngIf="calledVisitorName.errors.pattern" class="alert alert-danger mt-1" role="alert">
+            Invalid participant name entered
+          </div>
+        </div>
+      </div>
+
+  </div>
+  <div class="row p-2 align-items-center">
+      <div class="col-2">
+        <label class="col-form-label">Phone Number</label>
+      </div>
+      <div class="col-6">
+        <input type="tel" class="form-control" name="calledVisitorPhoneNo" #calledVisitorPhoneNo="ngModel"
+          [(ngModel)]="participant.phoneNo" required pattern="^0[0-9]{9}">
+
+          <div *ngIf="(calledVisitorPhoneNo.dirty && calledVisitorPhoneNo.invalid) || calledVisitorPhoneNo.touched && calledVisitorPhoneNo.invalid">
+            <div *ngIf="calledVisitorPhoneNo.errors.required" class="alert alert-danger mt-1" role="alert">
+              Please enter the participant phone number
+            </div>
+            <div *ngIf="calledVisitorPhoneNo.errors.pattern" class="alert alert-danger mt-1" role="alert">
+              Invalid participant phone number entered
+            </div>
+          </div>
+      </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Gender</label>
+    </div>
+    <div class="col-6">
+        <select class="form-select" name="calledVisitorGender" #calledVisitorGender="ngModel"  [(ngModel)]="participant.gender">
+            <option value="m">Male</option>
+            <option value="f">Female</option>
+          </select>
+    </div>
+</div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Email Address</label>
+    </div>
+    <div class="col-6">
+      <input type="email" class="form-control" name="calledVisitorEmail" #calledVisitorEmail="ngModel"
+        [(ngModel)]="participant.email" pattern="^[a-zA-Z0-9+\_\.\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,3}$">
+
+        <div *ngIf="(calledVisitorEmail.dirty && calledVisitorEmail.invalid) || calledVisitorEmail.touched && calledVisitorEmail.invalid">
+          <div *ngIf="calledVisitorEmail.errors.pattern" class="alert alert-danger mt-1" role="alert">
+            Invalid participant email entered
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Loan Id Number</label>
+    </div>
+    <div class="col-6">
+      <input type="text" class="form-control" name="calledVisitorLoanId" #calledVisitorLoanId="ngModel"
+        [(ngModel)]="participant.loanId" required>
+
+        <div *ngIf="(calledVisitorLoanId.dirty && calledVisitorLoanId.invalid) || calledVisitorLoanId.touched && calledVisitorLoanId.invalid">
+          <div *ngIf="calledVisitorLoanId.errors.required" class="alert alert-danger mt-1" role="alert">
+            Please enter the participant loan Id
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Cheque Number</label>
+    </div>
+    <div class="col-6">
+      <input type="text" class="form-control" name="calledVisitorCheque" #calledVisitorCheque="ngModel"
+        [(ngModel)]="cheque.chequeNo" required>
+
+        <div *ngIf="(calledVisitorCheque.dirty && calledVisitorCheque.invalid) || calledVisitorCheque.touched && calledVisitorCheque.invalid">
+          <div *ngIf="calledVisitorCheque.errors.required" class="alert alert-danger mt-1" role="alert">
+            Please enter the participant's cheque number
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Amount</label>
+    </div>
+    <div class="col-6">
+      <div class="input-group mb-3">
+        <span class="input-group-text">GHC</span>
+        <input type="text" class="form-control" name="calledVisitorAmount" #calledVisitorAmount="ngModel"
+          [(ngModel)]="cheque.amount" required>
+        <span class="input-group-text">.00</span>
+      </div>
+      <div *ngIf="(calledVisitorAmount.dirty && calledVisitorAmount.invalid) || calledVisitorAmount.touched && calledVisitorAmount.invalid">
+        <div *ngIf="calledVisitorAmount.errors.required" class="alert alert-danger mt-1" role="alert">
+          Please enter the participant's cheque amount
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row p-2 align-items-center">
+    <div class="col-2">
+      <label class="col-form-label">Name of School</label>
+    </div>
+    <div class="col-6">
+      <input type="text" class="form-control" name="calledVisitorSchoolName" #calledVisitorSchoolName="ngModel"
+        [(ngModel)]="cheque.schoolName" required>
+
+        <div *ngIf="(calledVisitorSchoolName.dirty && calledVisitorSchoolName.invalid) || calledVisitorSchoolName.touched && calledVisitorSchoolName.invalid">
+          <div *ngIf="calledVisitorSchoolName.errors.required" class="alert alert-danger mt-1" role="alert">
+            Please enter the participant's school name
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8 text-end">
+      <button class="btn btn-primary" type="submit" [hidden]="hideSubmitButton"
+        [disabled]="calledVisitorForm.invalid">Done</button>
+    </div>
+    <div class="col-8 text-end">
+      <button type="submit" class="btn btn-primary" disabled [hidden]="hideLoading">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Loading
+      </button>
+    </div>
+  </div>
+</form>
+
+<!--Toast to show that cheque of the participant has been recorded-->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="toastId">
+    <div class="d-flex">
+      <div class="toast-body">
+        Participant's cheque has successfully been recorded
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
